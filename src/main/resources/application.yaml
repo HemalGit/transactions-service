@@ -1,0 +1,38 @@
+server:
+  servlet:
+    context-path: "/transactions-service"
+
+spring:
+  application:
+    name: transactions-service
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  flyway:
+    locations: classpath:/db/migration
+    schemas: transactions
+    baselineOnMigrate: true
+    enabled: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/transactions?currentSchema=transactions
+    username: "${POSTGRESQL_USER}"
+    password: "${POSTGRESQL_PASSWORD}"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,loggers,cache"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.security.web: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: "${SECRET_KEY}"
+      expiry: 60

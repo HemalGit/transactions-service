@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "dcbe6f76-b07e-4461-89ff-c6dfd465d4b6",
+		"name": "transactions-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43434893",
+		"_collection_link": "https://dinushakariyawasam.postman.co/workspace/Dinusha-Kariyawasam's-Workspace~95d88c42-6362-4dc3-8644-fbf1e9d1fd88/collection/43434893-dcbe6f76-b07e-4461-89ff-c6dfd465d4b6?action=share&source=collection_link&creator=43434893"
+	},
+	"item": [
+		{
+			"name": "Actuator health - no auth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/transactions-service/actuator/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions-service",
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create JWT token (TX_CUSTOMER role)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"hemalK@gmail.com\", // -- user with TX_CUSTOMER role\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions-service/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions-service",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create JWT token (TX_ADMIN, TX_REPORTING) roles",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"joeD@gmail.com\", // -- user with TX_ADMIN, TX_REPORTING roles\r\n    \"password\": \"100200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions-service/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions-service",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create transaction (allowed for TX_CUSTOMER)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/x-kryo",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2VEQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVFhfQURNSU4iLCJST0xFX1RYX1JFUE9SVElORyJdLCJleHAiOjE3NDU3MTQ1OTR9.7NSH5lHrjHMEbjESI2SxCkK-Ogtccq13bf4tm0BZ4Jg",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"transactionTime\": \"2025-06-10 13:56\",\r\n  \"customerId\": \"10001\",\r\n  \"quantity\": 2,\r\n  \"productCode\": \"PRODUCT_005\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions-service/transaction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions-service",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reporting - Transactions Cost (allowed for TX_ADMIN, TX_REPORTING)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/x-kryo",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZW1hbEtAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9UWF9DVVNUT01FUiJdLCJleHAiOjE3NDU3MTQ1ODd9.oiLMxirVGqecm6OdiLYt3XYfKsec_yG7RITg0V9ipi8",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/transactions-service/reporting/transactions/cost?customerId=10001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions-service",
+						"reporting",
+						"transactions",
+						"cost"
+					],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "10001"
+						},
+						{
+							"key": "productCode",
+							"value": "PRODUCT_001",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reporting - Transactions Volume (allowed for TX_ADMIN, TX_REPORTING)",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/x-kryo",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2VEQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVFhfQURNSU4iLCJST0xFX1RYX1JFUE9SVElORyJdLCJleHAiOjE3NDU3MTQ1OTR9.7NSH5lHrjHMEbjESI2SxCkK-Ogtccq13bf4tm0BZ4Jg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/transactions-service/reporting/transactions/volume?location=Australia",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions-service",
+						"reporting",
+						"transactions",
+						"volume"
+					],
+					"query": [
+						{
+							"key": "location",
+							"value": "Australia"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
